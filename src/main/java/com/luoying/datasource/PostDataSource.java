@@ -2,6 +2,7 @@ package com.luoying.datasource;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.luoying.model.dto.post.PostQueryRequest;
+import com.luoying.model.entity.Post;
 import com.luoying.model.vo.PostVO;
 import com.luoying.service.PostService;
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +32,8 @@ public class PostDataSource implements DataSource<PostVO> {
         postQueryRequest.setPageSize(pageSize);
         ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = requestAttributes.getRequest();
-        Page<PostVO> postVOPage = postService.listPostVOByPage(postQueryRequest, request);
+        Page<Post> postPage = postService.searchFromEs(postQueryRequest);
+        Page<PostVO> postVOPage = postService.getPostVOPage(postPage, request);
         return postVOPage;
 
     }
